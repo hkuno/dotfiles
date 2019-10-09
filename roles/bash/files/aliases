@@ -1,0 +1,49 @@
+# path
+HOME=/home/${USER}
+PROJECTS=/home/${USER}/projects/
+OMP_WAIT_POLICY=ACTIVE
+HOST=`hostname -s`
+OS=`uname -s`
+
+if [ -x /usr/bin/scl_source ] && [ -d /opt/rh/devtoolset-7 ]; then
+    source scl_source enable devtoolset-7
+fi
+
+if [[ `uname -a | awk '{print $NF}'`XX != "CygwinXX" ]]
+then
+
+    if [[ $(which sudo) != "/usr/bin/sudo" ]]; then
+        alias sudo=/usr/bin/sudo
+    fi
+fi
+
+export GOMP_SPINCOUNT=INFINITE
+export OMP_WAIT_POLICY=ACTIVE
+export HWLOC_HIDE_ERRORS=1
+
+export OPENMPI="ompi"
+
+alias mkpatch="diff -Naur ../mpich-test.orig ."
+
+
+function mygrep() {
+   grep -rn ${1} . | grep -v Makefile | grep -v \.deps | grep -v cscope | grep -v tags | grep -v Binary | grep -v Man |\
+   grep -v config.log | grep -v config.status | grep -v lai: | grep -v configure: | grep -v autom4te.cache |\
+   grep -vw \.lo
+}
+
+function recscope() {
+    if [[ -f ./cscope.files ]]
+    then
+     echo "Warning: rebuilding ./cscope.files"
+      /bin/rm -f ./cscope.files
+    fi
+
+find . ! -type l -and \( -name "*.h" -o -name "*.c" -o -name "*.cc" -o -name "*.cxx" -o -name "*.cpp" -o -name "*.jav
+a" -o -name "*.py" -o -name "*.scala" \) > cscope.files
+#    find . ! -type l -and \( -name "*.h" -o -name "*.c" -o -name "*.cc" -o -name "*.cxx" -o -name "*.cpp" \) > cscope.files
+
+    cscope -Rbkq -i cscope.files
+
+    ctags -R -h .h.c.cc.cpp.cxx
+}
