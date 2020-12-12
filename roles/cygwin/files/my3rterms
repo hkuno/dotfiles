@@ -1,0 +1,64 @@
+#!/bin/bash
+
+#export DISPLAY=ce370418.cup.hp.com:0
+#export DISPLAY=HKUNO-N610C.hpl.hp.com:0
+#export DISPLAY=`finger hkuno | grep dhcp | awk '{print $NF}'`:0
+#export DISPLAY=127.0.0.1:0.0
+export DISPLAY=:0.0
+
+P=/tmp/.X11-unix/X0
+while [[ ! -r $P ]]; do
+    echo Waiting for $P
+    sleep 10
+done
+
+if [[ $# -ge 1 ]]
+then
+  FONTSIZE=${1}
+else
+  FONTSIZE=12
+fi
+
+if [[ `basename $0` == "my3rterms" ]]
+then
+  REVERSE="-reverse"
+  TNAME="black"
+else
+  REVERSE=" "
+fi
+
+if [[ `basename $0` == "my3bterms" ]]
+then
+  BGCOLOR="-bg MidnightBlue -fg white" 
+  TNAME="blue"
+else
+  if [[ `basename $0` == "my3mterms" ]]
+  then
+     BGCOLOR="-bg moccasin"
+     TNAME="moccasin"
+  else
+      if [[ `basename $0` == "my3gterms" ]]
+      then
+         BGCOLOR="-bg #dadada"
+         TNAME="grey"
+      else
+          if [[ `basename $0` == "my3pterms" ]]
+          then
+             BGCOLOR="-bg purple4"
+             TNAME="purple4"
+          fi
+      fi
+  fi
+fi
+xterm -ms purple -T ${TNAME} -sb -sl 5000 ${BGCOLOR} ${REVERSE} -fa dejavu -fs ${FONTSIZE} +tb -geometry 75x52 -e /usr/bin/zsh &
+xterm -ms purple -T ${TNAME} -sb -sl 5000 ${BGCOLOR} ${REVERSE} -fa dejavu -fs ${FONTSIZE} +tb -geometry 75x52 -e /usr/bin/zsh &
+xterm -ms purple -T ${TNAME} -sb -sl 5000 ${BGCOLOR} ${REVERSE} -fa dejavu -fs ${FONTSIZE} +tb -geometry 75x52 -e /usr/bin/zsh &
+#
+
+#xterm -ms purple -T "three" -sb -sl 5000 -font "*-fixed-*-*-*-20-*" +tb -geometry 75x52 -e /usr/bin/zsh &
+
+#xterm -ms purple -T "four" -sb -sl 5000 -fa lucidatypewriter -fs 16  +tb -geometry 75x52 &
+
+#xterm -ms purple -T "four" -sb -sl 5000 -fa lucidatypewriter -fs 14  +tb -geometry 75x52 &
+
+#xterm -ms purple -T "four" -sb -sl 5000 -fa lucidatypewriter -fs 12  +tb -geometry 75x52 &
